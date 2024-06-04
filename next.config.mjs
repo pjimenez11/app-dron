@@ -2,7 +2,10 @@
 const nextConfig = {
     images: {
         remotePatterns: [
-            'https://gestor-dron.netlify.app',
+            {
+                protocol: 'https',
+                hostname: 'gestor-dron.netlify.app',
+            }
         ]
     }
 };
