@@ -25,7 +25,9 @@ const GestorReportesPage: React.FC = () => {
   const vBat = reports.map((report) => report.vBat);
   const cCar = reports.map((report) => report.cCar);
   const vCar = reports.map((report) => report.vCar);
-  const lebels = reports.map((report) => moment.utc(report.fecha_registro).format("HH:mm"));
+  const lebels = reports.map((report) =>
+    moment.utc(report.fecha_registro).format("HH:mm")
+  );
 
   return (
     <div className="h-full  p-4">
@@ -34,15 +36,16 @@ const GestorReportesPage: React.FC = () => {
           handlerFindReports={handlerFindReports}
           handlerResetReports={handlerResetReports}
         />
-
-        <button className="btn-primary" onClick={() => generatePDF()}>
-          Imprimir reporte
-        </button>
+        {user?.role === "admin" && (
+          <button className="btn-primary" onClick={() => generatePDF()}>
+            Imprimir reporte
+          </button>
+        )}
       </div>
       {user?.role === "user" && (
-      <div className="mt-4 bg-white p-4 rounded-lg shadow-lg">
-        <TableReports reports={reports} />
-      </div>
+        <div className="mt-4 bg-white p-4 rounded-lg shadow-lg">
+          <TableReports reports={reports} />
+        </div>
       )}
       {user?.role === "admin" && (
         <div
@@ -50,13 +53,28 @@ const GestorReportesPage: React.FC = () => {
           className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4"
         >
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
-            <DeviseChart c={cPan} v={vPan} labelsDevise={lebels} title="Panel" />
+            <DeviseChart
+              c={cPan}
+              v={vPan}
+              labelsDevise={lebels}
+              title="Panel"
+            />
           </div>
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
-            <DeviseChart c={cBat} v={vBat} labelsDevise={lebels} title="Bateria" />
+            <DeviseChart
+              c={cBat}
+              v={vBat}
+              labelsDevise={lebels}
+              title="Bateria"
+            />
           </div>
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
-            <DeviseChart c={cCar} v={vCar} labelsDevise={lebels} title="Cargador" />
+            <DeviseChart
+              c={cCar}
+              v={vCar}
+              labelsDevise={lebels}
+              title="Cargador"
+            />
           </div>
         </div>
       )}
