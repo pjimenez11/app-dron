@@ -31,7 +31,7 @@ const FormLogin = () => {
         <input
           type="text"
           className="input mt-1"
-          {...register("user.email", { required: "El email es requerido", pattern: {value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, message: "El email no es válido"}})}
+          {...register("user.email", { required: "El email es requerido", pattern: {value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,8}$/, message: "El email no es válido"}})}
         />
         <label htmlFor="username" className="block text-sm text-red-500">
           {errors.user?.email?.message} &nbsp;

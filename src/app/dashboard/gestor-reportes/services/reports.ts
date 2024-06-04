@@ -1,3 +1,4 @@
+import droneApi from "@/config/apiRoute";
 import { reportsData } from "../data/reports";
 import {
   FindReportsRequest,
@@ -9,14 +10,13 @@ export const findReports = async (
 ): Promise<FindReportsResponse[]> => {
   try {
     const { fecha, time1, time2 } = request;
-    const startTime = new Date(`${fecha}T${time1}Z`); 
-    const endTime = new Date(`${fecha}T${time2}Z`); 
 
-    const filteredReports = reportsData.filter((report) => {
-      const reportTime = new Date(report.fecha);
-      return reportTime >= startTime && reportTime <= endTime;
-    });
-    return filteredReports;
+    const response = await droneApi.get(`/show_solar_panel_info?date=${fecha}&start_time=${time1}&end_time=${time2}`);
+    const dataResponse = response.data as FindReportsResponse[];
+
+    console.log(dataResponse);
+
+    return dataResponse;
   } catch (error) {
     throw error;
   }

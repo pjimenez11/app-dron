@@ -78,7 +78,7 @@ const FormRegister = () => {
           {...register("user.email", {
             required: "El correo electrónico es requerido",
             pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,8}$/,
               message: "El correo electrónico no es válido",
             },
           })}
