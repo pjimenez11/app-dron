@@ -1,4 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        remotePatterns: [
+            'https://gestor-dron.netlify.app',
+        ]
+    }
+};
 
 export default nextConfig;
