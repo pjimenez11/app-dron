@@ -14,8 +14,8 @@ export default function LoginPage() {
           <Image
             src="/images/logo.png"
             className="w-auto h-28 sm:h-40"
-            width={500}
-            height={500}
+            width={40}
+            height={40}
             alt="Logo"
           />
         </div>

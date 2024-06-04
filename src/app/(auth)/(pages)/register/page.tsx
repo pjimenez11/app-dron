@@ -14,9 +14,9 @@ export default function RegisterPage() {
           <Image
             src="/images/logo.png"
             className="w-auto h-28 sm:h-40"
-            width={500}
-            height={500}
             alt="Logo"
+            width={40}
+            height={40}
           />
         </div>
 
