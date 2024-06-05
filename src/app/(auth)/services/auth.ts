@@ -50,7 +50,7 @@ export const register = async (
   }
 };
 
-export const logout = async () => {
+export const logout = async (): Promise<void> => {
   try {
     await droneApi.delete("/auth/logout", {});
   } catch (error) {

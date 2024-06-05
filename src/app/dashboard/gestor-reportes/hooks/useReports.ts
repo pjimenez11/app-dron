@@ -6,6 +6,7 @@ import {
   FindReportsResponse,
 } from "../interfaces/findReports/reports-response.interface";
 import { findReports } from "../services/reports";
+import { toast } from "react-toastify";
 const useReports = () => {
   const [reports, setReports] = useState<FindReportsResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,8 +14,14 @@ const useReports = () => {
   const handlerFindReports = async (request: FindReportsRequest) => {
     setLoading(true);
     try {
-      const response = await findReports(request);
-      setReports(response);
+      const response = findReports(request);
+      toast.promise(response, {
+        pending: "Buscando reportes",
+        success: "Fin de la busqueda 👌",
+        error: "Error al buscar 🤯",
+      });
+      const data = await response;
+      setReports(data);
     } catch (error) {
       console.error(error);
     } finally {
