@@ -28,7 +28,7 @@ const useAuth = () => {
         secure: true,
         sameSite: "Strict",
       });
-      router.push("/dashboard/gestor-reportes");
+      router.refresh();
       loginStore(data.user);
     } catch (error) {
       console.log(error);
@@ -48,7 +48,7 @@ const useAuth = () => {
       const response = await registerPromise;
       const { code, data, message } = response.status;
       Cookies.set("token", data.token, { secure: true, sameSite: "Strict" });
-      router.push("/dashboard/gestor-reportes");
+      router.refresh();
       loginStore(data);
     } catch (error) {
       console.log(error);

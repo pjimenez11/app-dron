@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useAuthStore } from "@/app/(auth)/stores/authStore";
@@ -10,10 +10,18 @@ import useReports from "../hooks/useReports";
 import useGeneratePDF from "@/shared/hooks/useGeneratePDF";
 import DeviseChart from "../components/DeviseChart";
 import moment from "moment";
+import Combobox from "@/shared/components/combobox/Combobox";
 
 const GestorReportesPage: React.FC = () => {
-  const { reports, loading, handlerFindReports, handlerResetReports } =
-    useReports();
+  const {
+    reports,
+    loading,
+    handlerFindReportsDay,
+    handlerFindReportsMonth,
+    handlerFindReportsWeek,
+    handlerFindReportsCurrent,
+    handlerResetReports,
+  } = useReports();
 
   const { user } = useAuthStore();
 
@@ -29,12 +37,39 @@ const GestorReportesPage: React.FC = () => {
     moment.utc(report.fecha_registro).format("HH:mm")
   );
 
+  const options = [
+    { value: "hoy", label: "Ultimos registros" },
+    { value: "diario", label: "Diario" },
+    { value: "semanal", label: "Semanal" },
+    { value: "mensual", label: "Mensual" },
+  ];
+
+  const [selectedOption, setSelectedOption] = useState("diario");
+
+  const handleChange = (value: string) => {
+    setSelectedOption(value);
+    handlerResetReports();
+  };
+
+  useEffect(() => {
+    if (selectedOption === "hoy") {
+      handlerFindReportsCurrent();
+    }
+    if (selectedOption === "semanal") {
+      handlerFindReportsWeek();
+    }
+    if (selectedOption === "mensual") {
+      handlerFindReportsMonth();
+    }
+  }, [selectedOption]);
+
   return (
     <div className="h-full  p-4">
-      <div className="bg-white p-4 rounded-lg shadow-lg flex flex-wrap justify-center items-center gap-2 md:gap-6">
-        <FormSearch
-          handlerFindReports={handlerFindReports}
-          handlerResetReports={handlerResetReports}
+      <div className="bg-white p-4 rounded-lg shadow-lg flex justify-between items-center gap-2 md:gap-6 ">
+        <Combobox
+          options={options}
+          onChange={handleChange}
+          value={selectedOption}
         />
         {user?.role === "admin" && (
           <button className="btn-primary" onClick={() => generatePDF()}>
@@ -42,6 +77,14 @@ const GestorReportesPage: React.FC = () => {
           </button>
         )}
       </div>
+      {selectedOption === "diario" && (
+        <div className="bg-white mt-4 p-4 rounded-lg shadow-lg flex flex-wrap justify-center items-center gap-2 md:gap-6">
+          <FormSearch
+            handlerFindReports={handlerFindReportsDay}
+            handlerResetReports={handlerResetReports}
+          />
+        </div>
+      )}
       {user?.role === "user" && (
         <div className="mt-4 bg-white p-4 rounded-lg shadow-lg">
           <TableReports reports={reports} />

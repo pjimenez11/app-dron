@@ -11,8 +11,6 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { FindReportsResponse } from "../interfaces/findReports/reports-response.interface";
-import moment from "moment";
 
 ChartJS.register(
   CategoryScale,

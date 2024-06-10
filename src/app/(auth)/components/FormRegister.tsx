@@ -12,7 +12,21 @@ const FormRegister = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<RegisterRequest & { user: { confirmPassword: string } }>();
+  } = useForm<RegisterRequest & { user: { confirmPassword: string } }>(
+    {
+      defaultValues: {
+        user: {
+          username: "",
+          email: "",
+          password: "",
+          nombre: "",
+          apellido: "",
+          role: "admin",
+          confirmPassword: "",
+        },
+      },
+    }
+  );
 
   const onSubmit: SubmitHandler<RegisterRequest> = (data) => {
     handlerRegister(data);
