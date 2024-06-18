@@ -14,7 +14,7 @@ export const findReportsDay = async (
       const { fecha, time1, time2 } = request;
   
       const response = await droneApi.get(
-        `${BASE_URL}/personalized_info/${idDrone}?date=${fecha}&start_time=${time1}&end_time=${time2}`
+        `${BASE_URL}/filter_by_day/${idDrone}?date=${fecha}&start_time=${time1}&end_time=${time2}`
       );
       const dataResponse = response.data as UAVResponse[];
   
@@ -58,7 +58,7 @@ export const findReportsDay = async (
 
   export const findByDays = async ({fecha1, fecha2}:FindReportsRequestDays, idDrone: number): Promise<UAVResponse[]> => {
     try {
-      const response = await droneApi.get<UAVResponse[]>(`${BASE_URL}/filter_by_day/${idDrone}?start_date=${fecha1}&end_date=${fecha2}`);
+      const response = await droneApi.get<UAVResponse[]>(`${BASE_URL}/personalized_info/${idDrone}?start_date=${fecha1}&end_date=${fecha2}`);
       const dataResponse = response.data;
       return dataResponse;
     } catch (error) {
