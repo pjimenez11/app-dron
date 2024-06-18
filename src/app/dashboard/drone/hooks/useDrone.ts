@@ -80,7 +80,7 @@ const useDrone = () => {
             success: "Dron eliminado",
             error: "No se puede eliminar el dron",
           });
-          getAllDrones();
+          promise.then(() => getAllDrones());
         }
       });
     } catch (error) {
