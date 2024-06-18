@@ -9,40 +9,57 @@ const useGeneratePDF = () => {
     if (!contentRef.current) return;
 
     const input = contentRef.current;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    let yPos = 10;
+    let imagesCount = 0;
 
-    html2canvas(input).then(() => {
-      const pdf = new jsPDF("p", "mm", "a4");
-      let yPos = 10;
-      const imagesPromises: Promise<void>[] = [];
+    const imagesPromises: Promise<void>[] = [];
 
-      input.querySelectorAll(".chart-container").forEach((chartContainer, index) => {
-        const chartCanvas = chartContainer.querySelector("canvas");
-        if (chartCanvas) {
-          imagesPromises.push(
-            html2canvas(chartCanvas).then((canvas) => {
-              const imgData = canvas.toDataURL("image/png");
-              const imgProps = pdf.getImageProperties(imgData);
-              const pdfWidth = pdf.internal.pageSize.getWidth() - 20;
-              const pdfHeight = ((imgProps.height * pdfWidth) / imgProps.width)-20;
+    // Añadir título centrado en la primera página
+    const addTitle = () => {
+      pdf.setFontSize(16);
+      pdf.text("Informe UAV", pdfWidth / 2, 15, { align: "center" });
+    };
 
-              if (index % 2 === 0) {
-                if (yPos + pdfHeight > pdf.internal.pageSize.getHeight() - 10) {
-                  pdf.addPage();
-                  yPos = 10;
-                }
-                pdf.addImage(imgData, "PNG", 10, yPos, pdfWidth / 2 - 5, pdfHeight/2);
-              } else {
-                pdf.addImage(imgData, "PNG", pdfWidth / 2 + 10, yPos, pdfWidth / 2, pdfHeight/2);
-                yPos += pdfHeight/2;
-              }
-            })
-          );
-        }
-      });
+    // Función para agregar una nueva página si es necesario
+    const addNewPageIfNeeded = () => {
+      if (imagesCount > 0 && imagesCount % 8 === 0) { // 4 filas x 2 columnas = 8 imágenes por página
+        pdf.addPage();
+        yPos = 10;
+        addTitle(); // Añadir título en la nueva página
+      }
+    };
 
-      Promise.all(imagesPromises).then(() => {
-        pdf.save("admin_content.pdf");
-      });
+    // Iterar sobre las imágenes
+    input.querySelectorAll(".chart-container").forEach((chartContainer, index) => {
+      const chartCanvas = chartContainer.querySelector("div");
+      if (chartCanvas) {
+        imagesPromises.push(
+          html2canvas(chartCanvas).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+            addNewPageIfNeeded(); // Verificar si es necesario agregar una nueva página
+
+            const colIndex = imagesCount % 2;
+            const rowIndex = Math.floor(imagesCount / 2) % 4; // Máximo 4 filas
+
+            const xPos = 10 + colIndex * (pdfWidth / 2);
+            yPos = 20 + rowIndex * (pdfHeight / 4); // Ajustar yPos para dejar espacio para el título
+
+            pdf.addImage(imgData, "PNG", xPos, yPos, pdfWidth / 2 - 20, imgHeight / 4);
+            imagesCount++;
+          })
+        );
+      }
+    });
+
+    // Asegurar que todas las promesas de imágenes se resuelvan antes de guardar el PDF
+    Promise.all(imagesPromises).then(() => {
+      addTitle(); // Añadir título en la última página si es necesario
+      pdf.save("admin_content.pdf");
     });
   };
 

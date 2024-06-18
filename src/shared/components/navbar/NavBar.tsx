@@ -2,11 +2,18 @@
 import useAuth from "@/app/(auth)/hooks/useAuth";
 import { useAuthStore } from "@/app/(auth)/stores/authStore";
 import Image from "next/image";
+import Link from "next/link";
+import Menu from "./MenuItem";
 
 const NavBar = () => {
   const { handlerLogout } = useAuth();
   const { user } = useAuthStore();
   const initials = `${user?.nombre?.charAt(0)}${user?.apellido?.charAt(0)}`;
+
+  const items = [
+    { name: "Reportes", url: "/dashboard/gestor-reportes" },
+    { name: "Drones", url: "/dashboard/drone" },
+  ]
 
   return (
     <nav className="flex flex-col justify-between items-center shadow bg-gray-800 sticky z-10 top-0">
@@ -15,6 +22,7 @@ const NavBar = () => {
           <Image src="/images/logo.png" alt="Logo" width={40} height={40} />
           <h1 className="text-white ml-2 text-xl">Gestor Reportes VAV</h1>
         </div>
+        <Menu items={items} />
         <div className="flex items-center">
           <button
             className="btn-primary"

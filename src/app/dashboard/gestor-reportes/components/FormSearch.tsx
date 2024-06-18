@@ -4,15 +4,29 @@ import { HiSearch } from "react-icons/hi";
 import { FindReportsRequest } from "../interfaces/findReports/reports-response.interface";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useReports from "../hooks/useReports";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 interface FormSearchProps {
-  handlerFindReports: (request: FindReportsRequest) => Promise<void>;
+  idDrone: number;
+  handlerFindReports: (
+    request: FindReportsRequest,
+    idDrone: number
+  ) => Promise<void>;
   handlerResetReports: () => void;
+  handlerResetReportsUAV: () => void;
+  handlerFindReportsDayUAV: (
+    request: FindReportsRequest,
+    idDrone: number
+  ) => Promise<void>;
 }
 
 const FormSearch = ({
+  idDrone,
   handlerFindReports,
   handlerResetReports,
+  handlerFindReportsDayUAV,
+  handlerResetReportsUAV,
 }: FormSearchProps) => {
   const initialForm: FindReportsRequest = {
     fecha: "",
@@ -29,11 +43,14 @@ const FormSearch = ({
   } = useForm<FindReportsRequest>({ defaultValues: initialForm });
 
   const onSubmit: SubmitHandler<FindReportsRequest> = (data) => {
-    handlerFindReports(data);
+    if (idDrone === 0) return toast.error("Seleccione un dron");
+    handlerFindReports(data, idDrone);
+    handlerFindReportsDayUAV(data, idDrone);
   };
 
   const handleReset = () => {
     handlerResetReports();
+    handlerResetReportsUAV();
     reset(initialForm);
   };
 

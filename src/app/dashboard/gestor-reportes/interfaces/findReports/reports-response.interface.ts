@@ -5,14 +5,19 @@ export interface FindReportsRequest {
   time2: string;
 }
 
+export interface FindReportsRequestDays {
+  fecha1: string;
+  fecha2: string;
+}
 
 export interface FindReportsResponse {
   id:             number;
   fecha_registro: string;
-  vPan:           number;
-  cPan:           number;
-  vBat:           number;
-  cBat:           number;
-  vCar:           number;
-  cCar:           number;
+  Vp:             number;
+  Cp:             number;
+  Vb:             number;
+  Cb:             number;
+  Vc:             number;
+  Cc:             number;
 }
+
