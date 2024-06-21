@@ -13,6 +13,8 @@ import {
   findReportsWeek,
 } from "../../services/uav";
 import { toast } from "react-toastify";
+import obtenerRangoFecha from "@/shared/utils/RangoFecha";
+import LabelsFecha from "@/shared/utils/LabelsFecha";
 
 const initialState: UAVResponse = {
   data: [],
@@ -131,37 +133,23 @@ const useUAV = () => {
       0
     ) / reportsUAV?.data.length;
 
+  const handlerResetReportsUAV = () => {
+    setReportsUAV(initialState);
+  };
+  
   const corriente = reportsUAV?.data.map((report) => report.corriente);
   const voltaje = reportsUAV?.data.map((report) => report.voltaje);
   const porcentajeBateria = reportsUAV?.data.map(
     (report) => report.porcentaje_bateria
   );
 
-  const firstDate = moment.utc(reportsUAV?.data[0]?.fecha_registro);
-  const lastDate = moment.utc(
-    reportsUAV?.data[reportsUAV?.data.length - 1]?.fecha_registro
+  const labels = LabelsFecha(
+    reportsUAV.data.map((item) => item.fecha_registro)
   );
 
-  const labels = () => {
-    if (firstDate.isSame(lastDate, "day")) {
-      return reportsUAV?.data.map((report) =>
-        moment.utc(report.fecha_registro).format("HH:mm")
-      );
-    }
-
-    if (firstDate.isSame(lastDate, "month")) {
-      return reportsUAV?.data.map((report) =>
-        moment.utc(report.fecha_registro).format("DD HH:mm")
-      );
-    }
-    return reportsUAV?.data.map((report) =>
-      moment.utc(report.fecha_registro).format("DD/MM HH:mm")
-    );
-  };
-
-  const handlerResetReportsUAV = () => {
-    setReportsUAV(initialState);
-  };
+  const rangoFecha = obtenerRangoFecha(
+    reportsUAV.data.map((item) => item.fecha_registro)
+  );
 
   return {
     reportsUAV,
@@ -177,6 +165,7 @@ const useUAV = () => {
     voltaje,
     labels,
     porcentajeBateria,
+    rangoFecha,
   };
 };
 

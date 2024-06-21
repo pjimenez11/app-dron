@@ -6,7 +6,7 @@ export interface UAVResponse {
 
 export interface Datum {
     id:                 number;
-    fecha_registro:     Date;
+    fecha_registro:     string;
     voltaje:            number;
     porcentaje_bateria: number;
     corriente:          number;

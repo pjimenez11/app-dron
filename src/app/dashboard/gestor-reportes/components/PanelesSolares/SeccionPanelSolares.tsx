@@ -28,6 +28,8 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
     handlerFindReportsCurrent,
     handlerResetReports,
     handlerFindReportsByDays,
+    rangoFecha,
+    labels
   } = usePanelesSolares();
 
   const {
@@ -59,9 +61,6 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
   const Cc = reports.data.map((report) => report.Cc);
   const Vc = reports.data.map((report) => report.Vc);
 
-  const lebels = reports.data.map((report) =>
-    moment.utc(report.fecha_registro).format("HH:mm")
-  );
 
   const initialForm: FindReportsRequest = {
     fecha: "",
@@ -152,17 +151,38 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="paneles bg-white p-4 rounded-lg shadow-lg">
           <div>
-            <DeviseChart c={Cp} v={Vp} labelsDevise={lebels} title="Panel" />
+            <DeviseChart
+              c={Cp}
+              v={Vp}
+              labelsDevise={labels}
+              title={`Panel Solar ${rangoFecha}`}
+              label1="Corriente"
+              label2="Voltaje"
+            />
           </div>
         </div>
         <div className="paneles bg-white p-4 rounded-lg shadow-lg">
           <div>
-            <DeviseChart c={Cb} v={Vb} labelsDevise={lebels} title="Bateria" />
+            <DeviseChart
+              c={Cb}
+              v={Vb}
+              labelsDevise={labels}
+              title={`Batería ${rangoFecha}`}
+              label1="Corriente"
+              label2="Voltaje"
+            />
           </div>
         </div>
         <div className="paneles bg-white p-4 rounded-lg shadow-lg">
           <div>
-            <DeviseChart c={Cc} v={Vc} labelsDevise={lebels} title="Cargador" />
+            <DeviseChart
+              c={Cc}
+              v={Vc}
+              labelsDevise={labels}
+              title={`Cargador ${rangoFecha}`}
+              label1="Corriente"
+              label2="Voltaje"
+            />
           </div>
         </div>
       </div>

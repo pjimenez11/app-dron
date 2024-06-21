@@ -14,6 +14,8 @@ import {
 } from "../../services/paneles-solares";
 import { toast } from "react-toastify";
 import { FindReportsRequestDays } from "../../interfaces/findReports/paneles-solares.interface";
+import obtenerRangoFecha from "@/shared/utils/RangoFecha";
+import LabelsFecha from "@/shared/utils/LabelsFecha";
 
 const intialState: FindReportsResponse = {
   data: [],
@@ -128,6 +130,12 @@ const usePanelesSolares = () => {
     setReports(intialState);
   };
 
+  const labels = LabelsFecha(
+    reports.data.map((item) => item.fecha_registro)
+  );
+
+  const rangoFecha = obtenerRangoFecha(reports.data.map((item) => item.fecha_registro));
+
   return {
     reports,
     loading,
@@ -137,6 +145,8 @@ const usePanelesSolares = () => {
     handlerFindReportsCurrent,
     handlerResetReports,
     handlerFindReportsByDays,
+    rangoFecha,
+    labels,
   };
 };
 

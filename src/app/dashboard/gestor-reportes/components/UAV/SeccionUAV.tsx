@@ -27,6 +27,8 @@ const SeccionUAV = () => {
     promedioPorcentajeBateria,
     porcentajeBateria,
     labels,
+    loadingUAV,
+    rangoFecha
   } = useUAV();
 
   const {
@@ -147,17 +149,19 @@ const SeccionUAV = () => {
               <DeviseChart
                 c={corriente}
                 v={voltaje}
-                labelsDevise={labels()}
-                title="UAV"
+                labelsDevise={labels}
+                title={`UAV ${rangoFecha}`}
+                label1="Corriente"
+                label2="Voltaje"
               />
             </div>
           </div>
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
             <div>
               <AreaChart
-                labelsDevise={labels()}
+                labelsDevise={labels}
                 textLabel="Porcentaje de bateria"
-                title="UAV"
+                title={`UAV bateria/tiempo ${rangoFecha}`}
                 values={porcentajeBateria}
               />
             </div>

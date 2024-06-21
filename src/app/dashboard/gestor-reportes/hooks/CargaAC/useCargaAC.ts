@@ -14,6 +14,8 @@ import {
   FindReportsRequest,
   FindReportsRequestDays,
 } from "../../interfaces/findReports/paneles-solares.interface";
+import obtenerRangoFecha from "@/shared/utils/RangoFecha";
+import LabelsFecha from "@/shared/utils/LabelsFecha";
 
 const initialState: EstacionCargaACResponse = {
   data: [],
@@ -131,6 +133,17 @@ const useCargaAC = () => {
     setReportsCargaAC(initialState);
   };
 
+  const rangoFecha = obtenerRangoFecha(
+    reportsCargaAC.data.map((item) => item.fecha_registro)
+  );
+
+  const corriente = reportsCargaAC.data.map((item) => item.corrienteAC);
+  const potencia = reportsCargaAC.data.map((item) => item.potenciaAC);
+
+  const labels = LabelsFecha(
+    reportsCargaAC.data.map((item) => item.fecha_registro)
+  );
+
   return {
     reportsCargaAC,
     loadingCargaAC,
@@ -140,6 +153,10 @@ const useCargaAC = () => {
     handlerFindReportsCurrentCargaAC,
     handlerFindReportsByDaysCargaAC,
     handlerResetReportsCargaAC,
+    rangoFecha,
+    corriente,
+    potencia,
+    labels,
   };
 };
 

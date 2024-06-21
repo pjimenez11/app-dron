@@ -17,7 +17,7 @@ const useFilter = ({ handlerResetReports }: FilterProps) => {
     if (drones?.data.length) {
       const options = drones.data.map((dron) => ({
         value: dron.id.toString(),
-        label: dron.id + " - " + TIPO_DRON[dron.tipo_dron],
+        label: dron.id + " - " + dron.nombre,
       }));
       setOptionsDrones([
         { value: "", label: "Seleccionar dron..." },

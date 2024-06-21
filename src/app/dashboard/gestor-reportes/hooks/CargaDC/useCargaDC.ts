@@ -12,6 +12,8 @@ import {
   findReportsWeek,
 } from "../../services/carga-dc";
 import { toast } from "react-toastify";
+import obtenerRangoFecha from "@/shared/utils/RangoFecha";
+import LabelsFecha from "@/shared/utils/LabelsFecha";
 
 const initialState: EstacionCargaDCResponse = {
   data: [],
@@ -129,6 +131,16 @@ const useCargaDC = () => {
     setReportsCargaDC(initialState);
   };
 
+  const rangoFecha = obtenerRangoFecha(
+    reportsCargaDC.data.map((item) => item.fecha_registro)
+  );
+  const labels = LabelsFecha(
+    reportsCargaDC.data.map((item) => item.fecha_registro)
+  );
+
+  const corriente = reportsCargaDC.data.map((item) => item.corrienteDC);
+  const potencia = reportsCargaDC.data.map((item) => item.potenciaDC);
+
   return {
     reportsCargaDC,
     loadingCargaDC,
@@ -138,6 +150,10 @@ const useCargaDC = () => {
     handlerFindReportsCurrentCargaDC,
     handlerFindReportsByDaysCargaDC,
     handlerResetReportsCargaDC,
+    rangoFecha,
+    corriente,
+    potencia,
+    labels,
   };
 };
 

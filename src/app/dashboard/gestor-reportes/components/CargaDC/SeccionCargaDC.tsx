@@ -23,6 +23,10 @@ const SeccionCargaDC = () => {
     reportsCargaDC,
     loadingCargaDC,
     handlerResetReportsCargaDC,
+    corriente,
+    labels,
+    potencia,
+    rangoFecha,
   } = useCargaDC();
 
   const {
@@ -132,42 +136,20 @@ const SeccionCargaDC = () => {
         <div className="w-2/3 bg-white p-4 rounded-lg shadow-lg flex flex-col gap-4">
           <TableCargaDC uvs={reportsCargaDC} onPagination={onPagination} />
         </div>
-        {/* <div className="w-1/3 gap-4 flex flex-col">
-          <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
+        <div className="w-1/3 gap-4 flex flex-col">
+          <div className="cargaDC bg-white p-4 rounded-lg shadow-lg">
             <div>
               <DeviseChart
                 c={corriente}
-                v={voltaje}
-                labelsDevise={labels()}
-                title="CargaDC"
+                v={potencia}
+                labelsDevise={labels}
+                title={`Estación de carga DC ${rangoFecha}`}
+                label1="Corriente"
+                label2="Potencia"
               />
             </div>
           </div>
-          <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
-            <div>
-              <AreaChart
-                labelsDevise={labels()}
-                textLabel="Porcentaje de bateria"
-                title="CargaDC"
-                values={porcentajeBateria}
-              />
-            </div>
-          </div>
-          <div className="chart-container bg-white p-4 rounded-lg shadow-lg flex flex-col items-center justify-center">
-            <div className="border-[20px] border-blue-500 p-4 h-64 w-64 rounded-full flex flex-col justify-center items-center">
-              {promedioPorcentajeBateria >= 0 ? (
-                <p className="text-center text-md font-semibold">
-                  Promedio de porcentaje de bateria:{" "}
-                  {promedioPorcentajeBateria.toFixed(2)}%
-                </p>
-              ) : (
-                <p className="text-center text-md font-semibold">
-                  No hay datos de bateria
-                </p>
-              )}
-            </div>
-          </div>
-        </div> */}
+        </div>
       </div>
     </>
   );
