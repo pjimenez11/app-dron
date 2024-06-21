@@ -1,22 +1,33 @@
 "use client";
 
-import { FindReportsResponse } from "../interfaces/findReports/reports-response.interface";
+import { useEffect, useState } from "react";
+import { FindReportsResponse } from "../../interfaces/findReports/paneles-solares.interface";
+import { Pagination } from "@nextui-org/react";
 
 interface TableReportsProps {
-  reports: FindReportsResponse[];
+  response: FindReportsResponse;
+  onPagination: (page: number) => void;
 }
 
-const TablePanelesSolares = ({ reports }: TableReportsProps) => {
+const TablePanelesSolares = ({ response, onPagination }: TableReportsProps) => {
+  const { data: reports, pagination } = response;
+  const [page, setPage] = useState(pagination.page);
+
+  useEffect(() => {
+    onPagination(page);
+  }, [page]);
+
   return (
     <section className="container px-4 mx-auto">
       <div className="flex justify-between gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">
           Muestreo cada 5 minutos
-        </h2>{/* 
+        </h2>
+        {/* 
         <button className="btn-primary">Imprimir reporte</button> */}
       </div>
 
-      <div className="flex flex-col mt-6 max-h-[400px]">
+      <div className="flex flex-col mt-6">
         <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden border border-gray-200 md:rounded-lg">
@@ -109,6 +120,19 @@ const TablePanelesSolares = ({ reports }: TableReportsProps) => {
             </div>
           </div>
         </div>
+        {reports.length > 0 && (
+          <div className="flex w-full justify-center mt-4">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="primary"
+              page={page}
+              total={pagination.pages}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

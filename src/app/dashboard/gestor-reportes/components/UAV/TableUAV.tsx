@@ -1,18 +1,25 @@
-import { UAVResponse } from "../interfaces/findReports/uav.interface";
+"use client";
+import { useEffect, useState } from "react";
+import { UAVResponse } from "../../interfaces/findReports/uav.interface";
+import { Pagination } from "@nextui-org/react";
 
 interface PropsTable {
-  reports: UAVResponse[];
+  uvs: UAVResponse;
+  onPagination: (page: number) => void;
 }
 
-const TableUAV = ({ reports }: PropsTable) => {
+const TableUAV = ({ uvs, onPagination }: PropsTable) => {
+  const { data: reports, pagination } = uvs;
+  const [page, setPage] = useState(pagination.page);
+
+  useEffect(() => {
+    onPagination(page);
+  }, [page]);
+
   return (
     <section className="container px-4 mx-auto">
       <div className="flex justify-between gap-x-3">
-        <h2 className="text-lg font-medium text-gray-800 ">
-         Control UAV
-        </h2>
-        {/* 
-            <button className="btn-primary">Imprimir reporte</button> */}
+        <h2 className="text-lg font-medium text-gray-800 ">Control UAV</h2>
       </div>
 
       <div className="flex flex-col mt-6 max-h-[500px]">
@@ -108,6 +115,19 @@ const TableUAV = ({ reports }: PropsTable) => {
             </div>
           </div>
         </div>
+        {reports.length > 0 && (
+          <div className="flex w-full justify-center mt-4">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="primary"
+              page={page}
+              total={pagination.pages}
+              onChange={(page) => setPage(page)}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ import { GoogleMap, LoadScript, Polyline } from '@react-google-maps/api'; // Asu
 import { UAVResponse } from '@/app/dashboard/gestor-reportes/interfaces/findReports/uav.interface';
 
 interface DroneMapProps {
-  uavResponses: UAVResponse[];
+  uavResponses: UAVResponse;
 }
 
 const mapContainerStyle = {
@@ -24,7 +24,7 @@ const options = {
 };
 
 const DroneMap: React.FC<DroneMapProps> = ({ uavResponses }) => {
-  const pathCoordinates = uavResponses.map(response => ({
+  const pathCoordinates = uavResponses?.data.map(response => ({
     lat: response.latitud,
     lng: response.longitud,
   }));

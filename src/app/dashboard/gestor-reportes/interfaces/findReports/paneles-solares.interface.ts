@@ -11,6 +11,11 @@ export interface FindReportsRequestDays {
 }
 
 export interface FindReportsResponse {
+  data:       Datum[];
+  pagination: Pagination;
+}
+
+export interface Datum {
   id:             number;
   fecha_registro: string;
   Vp:             number;
@@ -19,5 +24,14 @@ export interface FindReportsResponse {
   Cb:             number;
   Vc:             number;
   Cc:             number;
+  uav_id:         number;
 }
 
+export interface Pagination {
+  count: number;
+  page:  number;
+  items: number;
+  pages: number;
+  next:  number;
+  prev:  number;
+}

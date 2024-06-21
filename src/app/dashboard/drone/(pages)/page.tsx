@@ -5,7 +5,7 @@ import TableDrones from "../components/TableDrones";
 import useDrone from "../hooks/useDrone";
 
 export default function DronesPage() {
-  const { drones, removeDron } = useDrone();
+  const { drones, removeDron, getAllDrones } = useDrone();
   return (
     <div className="h-full">
       <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col gap-4">
@@ -15,7 +15,7 @@ export default function DronesPage() {
             Nuevo Dron
           </Link>
         </div>
-        <TableDrones drones={drones} deleteDron={removeDron} />
+        <TableDrones drones={drones} deleteDron={removeDron} getAllDrones={getAllDrones} />
       </div>
     </div>
   );

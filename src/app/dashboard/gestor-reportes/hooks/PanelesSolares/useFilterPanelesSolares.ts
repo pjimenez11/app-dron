@@ -1,15 +1,14 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
-import useDrone from "../../drone/hooks/useDrone";
-import { TIPO_DRON } from "../../drone/constantes/dronConstantes";
+import { TIPO_DRON } from "@/app/dashboard/drone/constantes/dronConstantes";
+import useDrone from "@/app/dashboard/drone/hooks/useDrone";
+import { useEffect, useState } from "react";
 
 interface FilterProps {
   handlerResetReports: () => void;
-  handlerResetReportsUAV: () => void;
 }
 
-const useFilter = ({ handlerResetReports, handlerResetReportsUAV }: FilterProps) => {
+const useFilterPanelesSolares = ({ handlerResetReports }: FilterProps) => {
   const { drones } = useDrone();
   const [optionsDrones, setOptionsDrones] = useState<
     { value: string; label: string }[]
@@ -17,8 +16,8 @@ const useFilter = ({ handlerResetReports, handlerResetReportsUAV }: FilterProps)
   const [filterDrone, setFilterDrone] = useState<string>("");
 
   useEffect(() => {
-    if (drones.length) {
-      const options = drones.map((dron) => ({
+    if (drones?.data.length) {
+      const options = drones.data.map((dron) => ({
         value: dron.id.toString(),
         label: dron.id + " - " + TIPO_DRON[dron.tipo_dron],
       }));
@@ -31,7 +30,6 @@ const useFilter = ({ handlerResetReports, handlerResetReportsUAV }: FilterProps)
   const handleChangeDrone = (value: string) => {
     setFilterDrone(value);
     handlerResetReports();
-    handlerResetReportsUAV();
   };
 
   const optionsFilterDate = [
@@ -47,7 +45,6 @@ const useFilter = ({ handlerResetReports, handlerResetReportsUAV }: FilterProps)
   const handleChangeDate = (value: string) => {
     setFilterDate(value);
     handlerResetReports();
-    handlerResetReportsUAV();
   };
 
   return {
@@ -60,4 +57,4 @@ const useFilter = ({ handlerResetReports, handlerResetReportsUAV }: FilterProps)
   };
 };
 
-export default useFilter;
+export default useFilterPanelesSolares;

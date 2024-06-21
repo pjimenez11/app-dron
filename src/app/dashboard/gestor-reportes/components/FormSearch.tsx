@@ -1,59 +1,32 @@
 "use client";
 
 import { HiSearch } from "react-icons/hi";
-import { FindReportsRequest } from "../interfaces/findReports/reports-response.interface";
-import { SubmitHandler, useForm } from "react-hook-form";
-import useReports from "../hooks/useReports";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
+import { FindReportsRequest } from "../interfaces/findReports/paneles-solares.interface";
+import {
+  FieldErrors,
+  SubmitHandler,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormWatch,
+} from "react-hook-form";
 
 interface FormSearchProps {
-  idDrone: number;
-  handlerFindReports: (
-    request: FindReportsRequest,
-    idDrone: number
-  ) => Promise<void>;
-  handlerResetReports: () => void;
-  handlerResetReportsUAV: () => void;
-  handlerFindReportsDayUAV: (
-    request: FindReportsRequest,
-    idDrone: number
-  ) => Promise<void>;
+  register: UseFormRegister<FindReportsRequest>;
+  handleSubmit: UseFormHandleSubmit<FindReportsRequest, undefined>;
+  watch: UseFormWatch<FindReportsRequest>;
+  errors: FieldErrors<FindReportsRequest>;
+  onSubmit: SubmitHandler<FindReportsRequest>;
+  handleReset: () => void;
 }
 
 const FormSearch = ({
-  idDrone,
-  handlerFindReports,
-  handlerResetReports,
-  handlerFindReportsDayUAV,
-  handlerResetReportsUAV,
+  register,
+  handleSubmit,
+  watch,
+  errors,
+  onSubmit,
+  handleReset,
 }: FormSearchProps) => {
-  const initialForm: FindReportsRequest = {
-    fecha: "",
-    time1: "",
-    time2: "",
-  };
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<FindReportsRequest>({ defaultValues: initialForm });
-
-  const onSubmit: SubmitHandler<FindReportsRequest> = (data) => {
-    if (idDrone === 0) return toast.error("Seleccione un dron");
-    handlerFindReports(data, idDrone);
-    handlerFindReportsDayUAV(data, idDrone);
-  };
-
-  const handleReset = () => {
-    handlerResetReports();
-    handlerResetReportsUAV();
-    reset(initialForm);
-  };
-
   return (
     <form
       className="flex flex-wrap gap-2 md:gap-6 items-center justify-center"

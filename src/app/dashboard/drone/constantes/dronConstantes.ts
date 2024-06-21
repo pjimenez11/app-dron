@@ -4,7 +4,6 @@ export const TIPO_DRON: Record<string, string> = {
 };
 
 export const TIPO_PLACA: Record<string, string> = {
-  flexible: "Flexible",
-  monocristalina: "Monocristalina",
-  policristalina: "Policristalina",
+  arduino: "Arduino",
+  berrypi: "Berry Pi",
 };

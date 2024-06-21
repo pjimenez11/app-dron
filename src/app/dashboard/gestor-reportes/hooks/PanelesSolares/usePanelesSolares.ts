@@ -4,24 +4,33 @@ import { useState } from "react";
 import {
   FindReportsRequest,
   FindReportsResponse,
-} from "../interfaces/findReports/reports-response.interface";
+} from "../../interfaces/findReports/paneles-solares.interface";
 import {
   findByDays,
   findReportsCurrent,
   findReportsDay,
   findReportsMonth,
   findReportsWeek,
-} from "../services/reports";
+} from "../../services/paneles-solares";
 import { toast } from "react-toastify";
-import { FindReportsRequestDays } from '../interfaces/findReports/reports-response.interface';
-const useReports = () => {
-  const [reports, setReports] = useState<FindReportsResponse[]>([]);
+import { FindReportsRequestDays } from "../../interfaces/findReports/paneles-solares.interface";
+
+const intialState: FindReportsResponse = {
+  data: [],
+  pagination: { count: 0, page: 0, items: 0, pages: 0, next: 0, prev: 0 },
+};
+const usePanelesSolares = () => {
+  const [reports, setReports] = useState<FindReportsResponse>(intialState);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handlerFindReportsDay = async (request: FindReportsRequest, idDrone: number) => {
+  const handlerFindReportsDay = async (
+    request: FindReportsRequest,
+    idDrone: number,
+    page: number = 1
+  ) => {
     setLoading(true);
     try {
-      const response = findReportsDay(request, idDrone);
+      const response = findReportsDay(request, idDrone, page);
       toast.promise(response, {
         pending: "Buscando reportes...",
         success: "Fin de la busqueda",
@@ -36,10 +45,10 @@ const useReports = () => {
     }
   };
 
-  const handlerFindReportsMonth = async (idDrone: number) => {
+  const handlerFindReportsMonth = async (idDrone: number, page: number = 1) => {
     setLoading(true);
     try {
-      const response = findReportsMonth(idDrone);
+      const response = findReportsMonth(idDrone, page);
       toast.promise(response, {
         pending: "Buscando reportes...",
         success: "Fin de la busqueda",
@@ -54,10 +63,10 @@ const useReports = () => {
     }
   };
 
-  const handlerFindReportsWeek = async (idDrone: number) => {
+  const handlerFindReportsWeek = async (idDrone: number, page: number = 1) => {
     setLoading(true);
     try {
-      const response = findReportsWeek(idDrone);
+      const response = findReportsWeek(idDrone, page);
       toast.promise(response, {
         pending: "Buscando reportes...",
         success: "Fin de la busqueda",
@@ -72,10 +81,13 @@ const useReports = () => {
     }
   };
 
-  const handlerFindReportsCurrent = async (idDrone: number) => {
+  const handlerFindReportsCurrent = async (
+    idDrone: number,
+    page: number = 1
+  ) => {
     setLoading(true);
     try {
-      const response = findReportsCurrent(idDrone);
+      const response = findReportsCurrent(idDrone, page);
       toast.promise(response, {
         pending: "Buscando reportes...",
         success: "Fin de la busqueda",
@@ -90,10 +102,14 @@ const useReports = () => {
     }
   };
 
-  const handlerFindReportsByDays = async (request: FindReportsRequestDays, idDrone: number) => {
+  const handlerFindReportsByDays = async (
+    request: FindReportsRequestDays,
+    idDrone: number,
+    page: number = 1
+  ) => {
     setLoading(true);
     try {
-      const response = findByDays(request, idDrone);
+      const response = findByDays(request, idDrone, page);
       toast.promise(response, {
         pending: "Buscando reportes...",
         success: "Fin de la busqueda",
@@ -106,10 +122,10 @@ const useReports = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handlerResetReports = () => {
-    setReports([]);
+    setReports(intialState);
   };
 
   return {
@@ -120,8 +136,8 @@ const useReports = () => {
     handlerFindReportsWeek,
     handlerFindReportsCurrent,
     handlerResetReports,
-    handlerFindReportsByDays
+    handlerFindReportsByDays,
   };
 };
 
-export default useReports;
+export default usePanelesSolares;

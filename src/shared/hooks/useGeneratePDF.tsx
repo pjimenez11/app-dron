@@ -12,55 +12,65 @@ const useGeneratePDF = () => {
     const pdf = new jsPDF("p", "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    let yPos = 10;
-    let imagesCount = 0;
+    const margin = 10; // Margen vertical
+    const verticalSpace = 10; // Espacio vertical entre imágenes
+    const titleSpace = 10; // Espacio adicional para el título
+    let yPos = 30; // Dejar espacio para el título principal
 
     const imagesPromises: Promise<void>[] = [];
 
-    // Añadir título centrado en la primera página
-    const addTitle = () => {
+    // Añadir título centrado
+    const addTitle = (text: string) => {
       pdf.setFontSize(16);
-      pdf.text("Informe UAV", pdfWidth / 2, 15, { align: "center" });
+      pdf.text(text, pdfWidth / 2, yPos, { align: "center" });
+      yPos += titleSpace; // Ajustar yPos para dejar espacio después del título
     };
 
     // Función para agregar una nueva página si es necesario
-    const addNewPageIfNeeded = () => {
-      if (imagesCount > 0 && imagesCount % 8 === 0) { // 4 filas x 2 columnas = 8 imágenes por página
+    const addNewPageIfNeeded = (neededHeight: number) => {
+      if (yPos + neededHeight + verticalSpace > pdfHeight) {
+        // Si el próximo contenido no cabe en la página actual
         pdf.addPage();
-        yPos = 10;
-        addTitle(); // Añadir título en la nueva página
+        yPos = 20; // Reiniciar yPos para la nueva página
       }
     };
 
-    // Iterar sobre las imágenes
-    input.querySelectorAll(".chart-container").forEach((chartContainer, index) => {
-      const chartCanvas = chartContainer.querySelector("div");
-      if (chartCanvas) {
-        imagesPromises.push(
-          html2canvas(chartCanvas).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
-            const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+    // Función para agregar imágenes de una sección
+    const addImagesForSection = async (className: string) => {
+      const sectionElements = input.querySelectorAll(className);
+      const sectionArray = Array.from(sectionElements); // Convertir NodeList a Array
+      for (const container of sectionArray) {
+        const chartCanvas = container.querySelector("div");
+        if (chartCanvas) {
+          const canvas = await html2canvas(chartCanvas);
+          const imgData = canvas.toDataURL("image/png");
+          const imgWidth = canvas.width * 0.264583; // Convertir de px a mm
+          const imgHeight = canvas.height * 0.264583; // Convertir de px a mm
 
-            addNewPageIfNeeded(); // Verificar si es necesario agregar una nueva página
+          addNewPageIfNeeded(imgHeight); // Verificar si es necesario agregar una nueva página
 
-            const colIndex = imagesCount % 2;
-            const rowIndex = Math.floor(imagesCount / 2) % 4; // Máximo 4 filas
-
-            const xPos = 10 + colIndex * (pdfWidth / 2);
-            yPos = 20 + rowIndex * (pdfHeight / 4); // Ajustar yPos para dejar espacio para el título
-
-            pdf.addImage(imgData, "PNG", xPos, yPos, pdfWidth / 2 - 20, imgHeight / 4);
-            imagesCount++;
-          })
-        );
+          const xPos = (pdfWidth - imgWidth) / 2; // Calcular posición x para centrar la imagen
+          pdf.addImage(imgData, "PNG", xPos, yPos, imgWidth, imgHeight);
+          yPos += imgHeight + verticalSpace; // Ajustar yPos para la próxima imagen
+        }
       }
-    });
+    };
 
-    // Asegurar que todas las promesas de imágenes se resuelvan antes de guardar el PDF
-    Promise.all(imagesPromises).then(() => {
-      addTitle(); // Añadir título en la última página si es necesario
+    // Añadir secciones con títulos
+    const addSectionWithTitle = async (title: string, className: string) => {
+      addNewPageIfNeeded(titleSpace); // Verificar si es necesario agregar una nueva página antes del título
+      addTitle(title);
+      await addImagesForSection(className);
+    };
+
+    // Añadir las secciones de forma secuencial
+    const addSections = async () => {
+      await addSectionWithTitle("Reporte de los paneles solares", ".paneles");
+      await addSectionWithTitle("Reporte de los UAVS", ".chart-container");
       pdf.save("admin_content.pdf");
-    });
+    };
+
+    addSections();
   };
 
   return { contentRef, generatePDF };

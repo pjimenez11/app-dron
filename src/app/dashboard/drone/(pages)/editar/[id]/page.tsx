@@ -1,21 +1,20 @@
 "use client";
 
-import { set, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { DronForm } from "../../../interfaces/drones.interface";
 import useDrone from "../../../hooks/useDrone";
 import FormDrones from "../../../components/FormDrones";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { update } from "../../../services/drone";
 import useUser from "@/app/dashboard/users/hooks/useUser";
 
 export default function EditarPage() {
   const param = useParams();
-  const { findDroneById, drones, updateDron, loading } = useDrone();
+  const { findDroneById, updateDron, loading } = useDrone();
   const [idDron, setIdDron] = useState<number>(0);
   const router = useRouter();
 
-  const { findUserByFullName, handlerGetUsers, users } = useUser();
+  const { findUserByFullName, users } = useUser();
 
   const {
     register,
@@ -30,6 +29,9 @@ export default function EditarPage() {
       const dron = findDroneById(id);
       if (dron) {
         reset({
+          nombre: dron.nombre,
+          descripcion: dron.descripcion,
+          numero_serie: dron.numero_serie,
           tipo_dron: dron.tipo_dron,
           capacidad_bateria: dron.capacidad_bateria,
           tipo_placa: dron.tipo_placa,

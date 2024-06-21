@@ -1,6 +1,12 @@
+
 export interface UAVResponse {
+    data:       Datum[];
+    pagination: Pagination;
+}
+
+export interface Datum {
     id:                 number;
-    fecha_registro:     string;
+    fecha_registro:     Date;
     voltaje:            number;
     porcentaje_bateria: number;
     corriente:          number;
@@ -10,4 +16,13 @@ export interface UAVResponse {
     latitud:            number;
     longitud:           number;
     uav_id:             number;
+}
+
+export interface Pagination {
+    count: number;
+    page:  number;
+    items: number;
+    pages: number;
+    next?:  number;
+    prev?:  number;
 }

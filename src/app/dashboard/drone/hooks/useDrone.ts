@@ -1,14 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Dron, DronForm } from "../interfaces/drones.interface";
+import { Dron, Drones, DronForm } from "../interfaces/drones.interface";
 import { create, getAll, remove, update } from "../services/drone";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
+const initialState: Drones = {
+  data: [],
+  pagination: {
+    count: 0,
+    page: 0,
+    items: 0,
+    pages: 0,
+    next: null,
+    prev: null,
+  },
+};
+
 const useDrone = () => {
-  const [drones, setDrones] = useState<Dron[]>([]);
+  const [drones, setDrones] = useState<Drones>(initialState);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
@@ -16,10 +28,10 @@ const useDrone = () => {
     getAllDrones();
   }, []);
 
-  const getAllDrones = async () => {
+  const getAllDrones = async (page: number = 1) => {
     setLoading(true);
     try {
-      const response = await getAll();
+      const response = await getAll(page);
       setDrones(response);
     } catch (error) {
       console.error(error);
@@ -27,7 +39,8 @@ const useDrone = () => {
     setLoading(false);
   };
 
-  const findDroneById = (id: number) => drones.find((dron) => dron.id === id);
+  const findDroneById = (id: number) =>
+    drones?.data.find((dron) => dron.id === id);
 
   const createDron = async (dron: DronForm) => {
     try {
