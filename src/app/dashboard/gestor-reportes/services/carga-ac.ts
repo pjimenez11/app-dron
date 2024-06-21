@@ -10,13 +10,14 @@ const BASE_URL = "/estacion_carga_acs";
 //falta implementar
 export const findReportsDay = async (
   request: FindReportsRequest,
-  idDrone: number
+  idDrone: number,
+  page: number = 1
 ): Promise<EstacionCargaACResponse> => {
   try {
     const { fecha, time1, time2 } = request;
 
     const response = await droneApi.get(
-      `${BASE_URL}/filter_by_day/${idDrone}?date=${fecha}&start_time=${time1}&end_time=${time2}`
+      `${BASE_URL}/filter_by_day/${idDrone}?date=${fecha}&start_time=${time1}&end_time=${time2}&page=${page}`
     );
     const dataResponse = response.data as EstacionCargaACResponse;
 
@@ -27,11 +28,12 @@ export const findReportsDay = async (
 };
 
 export const findReportsMonth = async (
-  idDrone: number
+  idDrone: number,
+  page: number = 1
 ): Promise<EstacionCargaACResponse> => {
   try {
     const response = await droneApi.get<EstacionCargaACResponse>(
-      `${BASE_URL}/filter_by_month/${idDrone}`
+      `${BASE_URL}/filter_by_month/${idDrone}?page=${page}`
     );
 
     const dataResponse = response.data;
@@ -43,11 +45,12 @@ export const findReportsMonth = async (
 };
 
 export const findReportsWeek = async (
-  idDrone: number
+  idDrone: number,
+  page: number = 1
 ): Promise<EstacionCargaACResponse> => {
   try {
     const response = await droneApi.get<EstacionCargaACResponse>(
-      `${BASE_URL}/filter_by_week/${idDrone}`
+      `${BASE_URL}/filter_by_week/${idDrone}?page=${page}`
     );
     const dataResponse = response.data;
     return dataResponse;
@@ -57,11 +60,12 @@ export const findReportsWeek = async (
 };
 
 export const findReportsCurrent = async (
-  idDrone: number
+  idDrone: number,
+  page: number = 1
 ): Promise<EstacionCargaACResponse> => {
   try {
     const response = await droneApi.get<EstacionCargaACResponse>(
-      `${BASE_URL}/current/${idDrone}`
+      `${BASE_URL}/current/${idDrone}?page=${page}`
     );
     const dataResponse = response.data;
     return dataResponse;
@@ -70,13 +74,14 @@ export const findReportsCurrent = async (
   }
 };
 
-export const findByDay = async (
+export const findByDays = async (
   { fecha1, fecha2 }: FindReportsRequestDays,
-  idDrone: number
+  idDrone: number,
+  page: number = 1
 ): Promise<EstacionCargaACResponse> => {
   try {
     const response = await droneApi.get<EstacionCargaACResponse>(
-      `${BASE_URL}/personalized_info/${idDrone}?start_date=${fecha1}&end_date=${fecha2}`
+      `${BASE_URL}/personalized_info/${idDrone}?start_date=${fecha1}&end_date=${fecha2}&page=${page}`
     );
     const dataResponse = response.data;
     return dataResponse;

@@ -56,7 +56,6 @@ const useUAV = () => {
         success: "Fin de la busqueda",
         error: "Error al buscar",
       });
-      console.log(await promise);
       setReportsUAV(await promise);
     } catch (error) {
       console.error(error);

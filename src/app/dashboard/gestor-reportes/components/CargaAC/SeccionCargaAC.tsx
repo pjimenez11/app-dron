@@ -1,10 +1,8 @@
 import DroneMap from "@/shared/components/DronMap/DronMap";
-import useUAV from "../../hooks/UAV/useUAV";
-import TableUAV from "./TableUAV";
+import useCargaAC from "../../hooks/CargaAC/useCargaAC";
 import DeviseChart from "../DeviseChart";
 import AreaChart from "../AreaChart";
 import { use, useEffect } from "react";
-import useFilterUAV from "../../hooks/UAV/useFilterUAV";
 import Combobox from "@/shared/components/combobox/Combobox";
 import FormSearch from "../FormSearch";
 import DataRange from "../DataRange";
@@ -12,22 +10,20 @@ import { FindReportsRequest } from "../../interfaces/findReports/paneles-solares
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useDateRange from "../../hooks/useDateRange";
+import useFilter from "../../hooks/useFilter";
+import TableCargaAC from "./TableCargaAC";
 
-const SeccionUAV = () => {
+const SeccionCargaAC = () => {
   const {
-    handlerFindReportsCurrentUAV,
-    handlerFindReportsDayUAV,
-    handlerFindReportsMonthUAV,
-    handlerFindReportsWeekUAV,
-    handlerResetReportsUAV,
-    reportsUAV,
-    handlerFindReportsByDaysUAV,
-    corriente,
-    voltaje,
-    promedioPorcentajeBateria,
-    porcentajeBateria,
-    labels,
-  } = useUAV();
+    handlerFindReportsByDaysCargaAC,
+    handlerFindReportsCurrentCargaAC,
+    handlerFindReportsDayCargaAC,
+    handlerFindReportsMonthCargaAC,
+    handlerFindReportsWeekCargaAC,
+    reportsCargaAC,
+    loadingCargaAC,
+    handlerResetReportsCargaAC,
+  } = useCargaAC();
 
   const {
     filterDate,
@@ -36,18 +32,18 @@ const SeccionUAV = () => {
     filterDrone,
     handleChangeDrone,
     optionsDrones,
-  } = useFilterUAV({ handlerResetReportsUAV });
+  } = useFilter({ handlerResetReports: handlerResetReportsCargaAC });
 
   useEffect(() => {
     if (!filterDrone) return;
     if (filterDate === "hoy") {
-      handlerFindReportsCurrentUAV(+filterDrone);
+      handlerFindReportsCurrentCargaAC(+filterDrone);
     }
     if (filterDate === "semanal") {
-      handlerFindReportsWeekUAV(+filterDrone);
+      handlerFindReportsWeekCargaAC(+filterDrone);
     }
     if (filterDate === "mensual") {
-      handlerFindReportsMonthUAV(+filterDrone);
+      handlerFindReportsMonthCargaAC(+filterDrone);
     }
   }, [filterDate, filterDrone]);
 
@@ -67,36 +63,36 @@ const SeccionUAV = () => {
 
   const onSubmit: SubmitHandler<FindReportsRequest> = (data) => {
     if (+filterDrone === 0) return toast.error("Seleccione un dron");
-    handlerFindReportsDayUAV(data, +filterDrone);
+    handlerFindReportsDayCargaAC(data, +filterDrone);
   };
 
   const handleReset = () => {
-    handlerResetReportsUAV();
+    handlerResetReportsCargaAC();
     reset(initialForm);
   };
 
   const { date, setDate, fechaRequest } = useDateRange({
     idDrone: +filterDrone,
-    handlerFindReportsByDays: handlerFindReportsByDaysUAV,
-    handlerResetReports: handlerResetReportsUAV,
+    handlerFindReportsByDays: handlerFindReportsByDaysCargaAC,
+    handlerResetReports: handlerResetReportsCargaAC,
   });
 
   const onPagination = (page: number) => {
     if (!filterDrone) return;
     if (filterDate === "hoy") {
-      handlerFindReportsCurrentUAV(+filterDrone, page);
+      handlerFindReportsCurrentCargaAC(+filterDrone, page);
     }
     if (filterDate === "semanal") {
-      handlerFindReportsWeekUAV(+filterDrone, page);
+      handlerFindReportsWeekCargaAC(+filterDrone, page);
     }
     if (filterDate === "mensual") {
-      handlerFindReportsMonthUAV(+filterDrone, page);
+      handlerFindReportsMonthCargaAC(+filterDrone, page);
     }
     if (filterDate === "personalizado") {
-      handlerFindReportsByDaysUAV(fechaRequest, +filterDrone, page);
+      handlerFindReportsByDaysCargaAC(fechaRequest, +filterDrone, page);
     }
     if (filterDate === "diario") {
-      handlerFindReportsDayUAV(watch(), +filterDrone, page);
+      handlerFindReportsDayCargaAC(watch(), +filterDrone, page);
     }
   };
 
@@ -116,10 +112,6 @@ const SeccionUAV = () => {
           onChange={handleChangeDrone}
           value={filterDrone}
         />
-
-        {/* <button className="btn-primary" onClick={() => generatePDF()}>
-            Imprimir reporte
-          </button> */}
       </div>
       {filterDate === "diario" && (
         <div className="bg-white p-4 rounded-lg shadow-lg flex flex-wrap justify-center items-center gap-2 md:gap-6">
@@ -138,17 +130,16 @@ const SeccionUAV = () => {
       )}
       <div className="flex flex-row gap-4">
         <div className="w-2/3 bg-white p-4 rounded-lg shadow-lg flex flex-col gap-4">
-          <TableUAV uvs={reportsUAV} onPagination={onPagination} />
-          <DroneMap uavResponses={reportsUAV} />
+          <TableCargaAC uvs={reportsCargaAC} onPagination={onPagination} />
         </div>
-        <div className="w-1/3 gap-4 flex flex-col">
+        {/* <div className="w-1/3 gap-4 flex flex-col">
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
             <div>
               <DeviseChart
                 c={corriente}
                 v={voltaje}
                 labelsDevise={labels()}
-                title="UAV"
+                title="CargaAC"
               />
             </div>
           </div>
@@ -157,7 +148,7 @@ const SeccionUAV = () => {
               <AreaChart
                 labelsDevise={labels()}
                 textLabel="Porcentaje de bateria"
-                title="UAV"
+                title="CargaAC"
                 values={porcentajeBateria}
               />
             </div>
@@ -176,10 +167,10 @@ const SeccionUAV = () => {
               )}
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
 };
 
-export default SeccionUAV;
+export default SeccionCargaAC;

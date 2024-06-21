@@ -5,7 +5,7 @@ import {
   FindReportsRequestDays,
 } from "../interfaces/findReports/paneles-solares.interface";
 
-const BASE_URL = "/estacion_carga_acs";
+const BASE_URL = "/estacion_carga_dcs";
 
 //falta implementar
 export const findReportsDay = async (
@@ -74,7 +74,7 @@ export const findReportsCurrent = async (
   }
 };
 
-export const findByDay = async (
+export const findByDays = async (
   { fecha1, fecha2 }: FindReportsRequestDays,
   idDrone: number,
   page: number = 1
