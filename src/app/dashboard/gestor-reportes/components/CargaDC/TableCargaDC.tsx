@@ -12,14 +12,13 @@ const TableCargaDC = ({ uvs, onPagination }: PropsTable) => {
   const { data: reports, pagination } = uvs;
   const [page, setPage] = useState(pagination.page);
 
-  console.log(reports);
-
   useEffect(() => {
     onPagination(page);
   }, [page]);
 
   return (
-    <section className="container px-4 mx-auto">{/* 
+    <section className="container px-4 mx-auto">
+      {/* 
       <div className="flex justify-between gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">ESTACION DE CARGA</h2>
       </div> */}
@@ -64,7 +63,6 @@ const TableCargaDC = ({ uvs, onPagination }: PropsTable) => {
                         <td className="py-3.5 px-4 text-sm text-gray-500">
                           {report.potenciaDC}
                         </td>
-                        
                       </tr>
                     ))}
                   </tbody>
@@ -82,7 +80,7 @@ const TableCargaDC = ({ uvs, onPagination }: PropsTable) => {
             </div>
           </div>
         </div>
-        {reports.length > 0 && (
+        {reports.length > 0 && pagination.pages > 1 && (
           <div className="flex w-full justify-center mt-4">
             <Pagination
               isCompact

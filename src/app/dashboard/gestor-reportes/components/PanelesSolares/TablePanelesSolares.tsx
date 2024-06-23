@@ -120,7 +120,7 @@ const TablePanelesSolares = ({ response, onPagination }: TableReportsProps) => {
             </div>
           </div>
         </div>
-        {reports.length > 0 && (
+        {reports.length > 0 && pagination.pages > 1 && (
           <div className="flex w-full justify-center mt-4">
             <Pagination
               isCompact

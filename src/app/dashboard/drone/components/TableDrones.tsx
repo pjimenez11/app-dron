@@ -145,7 +145,7 @@ const TableDrones = ({ drones, deleteDron, getAllDrones }: TableDronesProps) => 
             </div>
           </div>
         </div>
-        {drones?.data.length > 0 && (
+        {drones?.data.length > 0 && drones.pagination.pages > 1 && (
           <div className="flex w-full justify-center mt-4">
             <Pagination
               isCompact

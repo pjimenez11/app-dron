@@ -5,10 +5,10 @@ const obtenerRangoFecha = (fechas: string[]):string => {
         return '';
     } else if (fechas.length === 1) {
         // Si hay solo una fecha, retornar esa fecha
-        return moment(fechas[0]).format('DD/MM/YYYY');
+        return moment.utc(fechas[0]).format('DD/MM/YYYY');
     } else {
         // Ordenar las fechas en orden ascendente
-        const fechasOrdenadas = fechas.map(fecha => moment(fecha)).sort((a, b) => a.valueOf() - b.valueOf());
+        const fechasOrdenadas = fechas.map(fecha => moment.utc(fecha)).sort((a, b) => a.valueOf() - b.valueOf());
         
         // Obtener la fecha más temprana y la fecha más reciente
         const fechaInicio = fechasOrdenadas[0].format('DD/MM/YYYY');

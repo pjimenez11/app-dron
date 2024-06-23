@@ -17,7 +17,8 @@ const TableCargaAC = ({ uvs, onPagination }: PropsTable) => {
   }, [page]);
 
   return (
-    <section className="container px-4 mx-auto">{/* 
+    <section className="container px-4 mx-auto">
+      {/* 
       <div className="flex justify-between gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">ESTACION DE CARGA</h2>
       </div> */}
@@ -79,7 +80,7 @@ const TableCargaAC = ({ uvs, onPagination }: PropsTable) => {
             </div>
           </div>
         </div>
-        {reports.length > 0 && (
+        {reports.length > 0 && pagination.pages > 1 && (
           <div className="flex w-full justify-center mt-4">
             <Pagination
               isCompact
