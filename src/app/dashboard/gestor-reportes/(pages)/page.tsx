@@ -13,22 +13,38 @@ const GestorReportesPage: React.FC = () => {
 
   return (
     <div className="h-full flex flex-col gap-4" ref={contentRef}>
-      <div className="bg-sky-900 p-4 rounded-lg shadow-lg">
-        <h1 className="text-2xl text-white font-semibold text-center">PANELES SOLARES</h1>
-      </div>
-      <SeccionPanelSolares generatePDF={generatePDF} />
+      {user.role === "admin" && (
+        <>
+          <div className="bg-sky-900 p-4 rounded-lg shadow-lg">
+            <h1 className="text-2xl text-white font-semibold text-center">
+              PANELES SOLARES
+            </h1>
+          </div>
+          <SeccionPanelSolares generatePDF={generatePDF} />
+        </>
+      )}
+
       <div className="bg-sky-900 p-4 rounded-lg shadow-lg">
         <h1 className="text-2xl text-white font-semibold text-center">UAVS</h1>
       </div>
       <SeccionUAV />
-      <div className="bg-sky-900 p-4 rounded-lg shadow-lg">
-        <h1 className="text-2xl text-white font-semibold text-center">ESTACIÓN DE CARGA AC</h1>
-      </div>
-      <SeccionCargaAC />
-      <div className="bg-sky-900 p-4 rounded-lg shadow-lg">
-        <h1 className="text-2xl text-white font-semibold text-center">ESTACIÓN DE CARGA DC</h1>
-      </div>
-      <SeccionCargaDC />
+
+      {user.role === "admin" && (
+        <>
+          <div className="bg-sky-900 p-4 rounded-lg shadow-lg">
+            <h1 className="text-2xl text-white font-semibold text-center">
+              ESTACIÓN DE CARGA AC
+            </h1>
+          </div>
+          <SeccionCargaAC />
+          <div className="bg-sky-900 p-4 rounded-lg shadow-lg">
+            <h1 className="text-2xl text-white font-semibold text-center">
+              ESTACIÓN DE CARGA DC
+            </h1>
+          </div>
+          <SeccionCargaDC />
+        </>
+      )}
 
       {/* <div className="flex flex-row gap-4">
         <div className="w-2/3 bg-white p-4 rounded-lg shadow-lg">

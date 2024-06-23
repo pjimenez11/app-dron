@@ -29,9 +29,10 @@ interface Props {
   label1: string;
   label2: string;
   labelsDevise: string[];
+  height: number;
 }
 
-const DeviseChart = ({ c, v, title, label1, label2, labelsDevise }: Props) => {
+const DeviseChart = ({ c, v, title, label1, label2, labelsDevise, height}: Props) => {
   const options = {
     responsive: true,
     plugins: {
@@ -63,7 +64,7 @@ const DeviseChart = ({ c, v, title, label1, label2, labelsDevise }: Props) => {
       },
     ],
   };
-  return <Line options={options} data={data} height={250} />;
+  return <Line options={options} data={data} height={height} />;
 };
 
 export default DeviseChart;

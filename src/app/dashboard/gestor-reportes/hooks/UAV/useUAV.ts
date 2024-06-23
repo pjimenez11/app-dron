@@ -127,16 +127,12 @@ const useUAV = () => {
     }
   };
 
-  const promedioPorcentajeBateria =
-    reportsUAV?.data.reduce(
-      (acc, report) => acc + report.porcentaje_bateria,
-      0
-    ) / reportsUAV?.data.length;
+  const promedioPorcentajeBateria = reportsUAV.data.length > 0 ? reportsUAV.data.map((report) => report.porcentaje_bateria).reduce((a, b) => a + b) / reportsUAV.data.length : 0;
 
   const handlerResetReportsUAV = () => {
     setReportsUAV(initialState);
   };
-  
+
   const corriente = reportsUAV?.data.map((report) => report.corriente);
   const voltaje = reportsUAV?.data.map((report) => report.voltaje);
   const porcentajeBateria = reportsUAV?.data.map(

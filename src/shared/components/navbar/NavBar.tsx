@@ -13,16 +13,20 @@ const NavBar = () => {
   const items = [
     { name: "Reportes", url: "/dashboard/gestor-reportes" },
     { name: "Drones", url: "/dashboard/drone" },
-  ]
+  ];
 
   return (
     <nav className="flex flex-col justify-between items-center shadow bg-gray-800 sticky z-50 top-0">
-      <div className="flex items-center justify-between container p-4">
+      <div className="flex flex-col lg:flex-row items-center justify-between container p-4 gap-4">
         <div className="flex items-center">
           <Image src="/images/logo.png" alt="Logo" width={40} height={40} />
           <h1 className="text-white ml-2 text-xl">Gestor Reportes VAV</h1>
         </div>
-        <Menu items={items} />
+        {user.role === "admin" && (
+          <>
+            <Menu items={items} />
+          </>
+        )}
         <div className="flex items-center">
           <button
             className="btn-primary"

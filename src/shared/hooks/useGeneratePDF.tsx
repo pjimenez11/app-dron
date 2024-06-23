@@ -44,7 +44,7 @@ const useGeneratePDF = () => {
         if (chartCanvas) {
           const canvas = await html2canvas(chartCanvas);
           const imgData = canvas.toDataURL("image/png");
-          const imgWidth = canvas.width * 0.264583-20; // Convertir de px a mm
+          const imgWidth = 130; // Convertir de px a mm
           const imgHeight = canvas.height * 0.264583-20; // Convertir de px a mm
 
           addNewPageIfNeeded(imgHeight); // Verificar si es necesario agregar una nueva página

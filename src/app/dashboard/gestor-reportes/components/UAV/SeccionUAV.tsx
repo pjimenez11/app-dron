@@ -4,7 +4,6 @@ import TableUAV from "./TableUAV";
 import DeviseChart from "../DeviseChart";
 import AreaChart from "../AreaChart";
 import { use, useEffect } from "react";
-import useFilterUAV from "../../hooks/UAV/useFilterUAV";
 import Combobox from "@/shared/components/combobox/Combobox";
 import FormSearch from "../FormSearch";
 import DataRange from "../DataRange";
@@ -12,6 +11,8 @@ import { FindReportsRequest } from "../../interfaces/findReports/paneles-solares
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useDateRange from "../../hooks/useDateRange";
+import useFilter from "../../hooks/useFilter";
+import BateryChart from "../BateryChart";
 
 const SeccionUAV = () => {
   const {
@@ -28,7 +29,7 @@ const SeccionUAV = () => {
     porcentajeBateria,
     labels,
     loadingUAV,
-    rangoFecha
+    rangoFecha,
   } = useUAV();
 
   const {
@@ -38,7 +39,7 @@ const SeccionUAV = () => {
     filterDrone,
     handleChangeDrone,
     optionsDrones,
-  } = useFilterUAV({ handlerResetReportsUAV });
+  } = useFilter({ handlerResetReports: handlerResetReportsUAV });
 
   useEffect(() => {
     if (!filterDrone) return;
@@ -138,12 +139,15 @@ const SeccionUAV = () => {
       {filterDate === "personalizado" && (
         <DataRange date={date} setDate={setDate} />
       )}
-      <div className="flex flex-row gap-4">
-        <div className="w-2/3 bg-white p-4 rounded-lg shadow-lg flex flex-col gap-4">
+      <div className="flex md:flex-row flex-col gap-4">
+        <div className="md:w-2/3 w-full h-full bg-white p-4 rounded-lg shadow-lg flex flex-col gap-4">
+
           <TableUAV uvs={reportsUAV} onPagination={onPagination} />
-          <DroneMap uavResponses={reportsUAV} />
+          <div className="w-full min-h-80 h-full">
+            <DroneMap uavResponses={reportsUAV} loadingData={loadingUAV} />
+          </div>
         </div>
-        <div className="w-1/3 gap-4 flex flex-col">
+        <div className="md:w-1/3 w-full gap-4 flex flex-col">
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
             <div>
               <DeviseChart
@@ -153,11 +157,12 @@ const SeccionUAV = () => {
                 title={`UAV ${rangoFecha}`}
                 label1="Corriente"
                 label2="Voltaje"
+                height={250}
               />
             </div>
           </div>
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg">
-            <div>
+            <div className="w-full h-full">
               <AreaChart
                 labelsDevise={labels}
                 textLabel="Porcentaje de bateria"
@@ -167,17 +172,14 @@ const SeccionUAV = () => {
             </div>
           </div>
           <div className="chart-container bg-white p-4 rounded-lg shadow-lg flex flex-col items-center justify-center">
-            <div className="border-[20px] border-blue-500 p-4 h-64 w-64 rounded-full flex flex-col justify-center items-center">
-              {promedioPorcentajeBateria >= 0 ? (
-                <p className="text-center text-md font-semibold">
-                  Promedio de porcentaje de bateria:{" "}
-                  {promedioPorcentajeBateria.toFixed(2)}%
-                </p>
-              ) : (
-                <p className="text-center text-md font-semibold">
-                  No hay datos de bateria
-                </p>
-              )}
+            <div className="w-full min-h-fit">
+              <h2 className="text-sm text-center font-medium text-gray-800 ">
+                Promedio porcentaje de bateria
+              </h2>
+              <BateryChart
+                batteryLevel={promedioPorcentajeBateria}
+                width={250}
+              />
             </div>
           </div>
         </div>

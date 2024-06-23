@@ -7,12 +7,17 @@ import FormDrones from "../../../components/FormDrones";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useUser from "@/app/dashboard/users/hooks/useUser";
+import { useAuthStore } from "@/app/(auth)/stores/authStore";
 
 export default function EditarPage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
+  if (user.role !== "admin") {
+    return router.push("/dashboard/gestor-reportes");
+  }
   const param = useParams();
   const { findDroneById, updateDron, loading } = useDrone();
   const [idDron, setIdDron] = useState<number>(0);
-  const router = useRouter();
 
   const { findUserByFullName, users } = useUser();
 

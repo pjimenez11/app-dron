@@ -55,7 +55,7 @@ const AreaChart = ({ values, title, labelsDevise, textLabel }: Props) => {
       },
     ],
   };
-  return <Line options={options} data={data} />;
+  return <Line options={options} data={data} height={150} />;
 };
 
 export default AreaChart;

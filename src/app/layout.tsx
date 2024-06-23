@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <NextUIProviderApp>
           {children}
-          <Toastify />
+          {/* <Toastify /> */}
         </NextUIProviderApp>
       </body>
     </html>

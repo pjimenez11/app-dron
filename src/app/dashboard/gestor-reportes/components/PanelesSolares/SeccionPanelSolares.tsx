@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import useFilterPanelesSolares from "../../hooks/PanelesSolares/useFilterPanelesSolares";
 import usePanelesSolares from "../../hooks/PanelesSolares/usePanelesSolares";
 import Combobox from "@/shared/components/combobox/Combobox";
 import FormSearch from "../FormSearch";
@@ -13,6 +12,7 @@ import { FindReportsRequest } from "../../interfaces/findReports/paneles-solares
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import useDateRange from "../../hooks/useDateRange";
+import useFilter from "../../hooks/useFilter";
 
 interface SeccionPanelSolaresProps {
   generatePDF: () => void;
@@ -39,7 +39,7 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
     filterDrone,
     handleChangeDrone,
     optionsDrones,
-  } = useFilterPanelesSolares({ handlerResetReports });
+  } = useFilter({ handlerResetReports });
 
   useEffect(() => {
     if (!filterDrone) return;
@@ -158,6 +158,7 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
               title={`Panel Solar ${rangoFecha}`}
               label1="Corriente"
               label2="Voltaje"
+              height={250}
             />
           </div>
         </div>
@@ -170,6 +171,7 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
               title={`Batería ${rangoFecha}`}
               label1="Corriente"
               label2="Voltaje"
+              height={250}
             />
           </div>
         </div>
@@ -182,6 +184,7 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
               title={`Cargador ${rangoFecha}`}
               label1="Corriente"
               label2="Voltaje"
+              height={250}
             />
           </div>
         </div>

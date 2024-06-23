@@ -132,11 +132,11 @@ const SeccionCargaDC = () => {
       {filterDate === "personalizado" && (
         <DataRange date={date} setDate={setDate} />
       )}
-      <div className="flex flex-row gap-4">
-        <div className="w-2/3 bg-white p-4 rounded-lg shadow-lg flex flex-col gap-4">
+      <div className="flex md:flex-row flex-col gap-4">
+        <div className="md:w-1/2 w-full bg-white p-4 rounded-lg shadow-lg flex flex-col gap-4">
           <TableCargaDC uvs={reportsCargaDC} onPagination={onPagination} />
         </div>
-        <div className="w-1/3 gap-4 flex flex-col">
+        <div className="md:w-1/2 w-full gap-4 flex flex-col">
           <div className="cargaDC bg-white p-4 rounded-lg shadow-lg">
             <div>
               <DeviseChart
@@ -146,6 +146,7 @@ const SeccionCargaDC = () => {
                 title={`Estación de carga DC ${rangoFecha}`}
                 label1="Corriente"
                 label2="Potencia"
+                height={160}
               />
             </div>
           </div>

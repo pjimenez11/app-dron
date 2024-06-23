@@ -4,8 +4,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { DronForm } from "../../interfaces/drones.interface";
 import FormDrones from "../../components/FormDrones";
 import useDrone from "../../hooks/useDrone";
+import { useAuthStore } from "@/app/(auth)/stores/authStore";
+import { useRouter } from "next/router";
 
 export default function NuevoPage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
+  if (user.role !== "admin") {
+    return router.push("/dashboard/gestor-reportes");
+  }
   const { createDron } = useDrone();
   const {
     register,
