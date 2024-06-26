@@ -12,9 +12,7 @@ import { useAuthStore } from "@/app/(auth)/stores/authStore";
 export default function EditarPage() {
   const { user } = useAuthStore();
   const router = useRouter();
-  if (user.role !== "admin") {
-    return router.push("/dashboard/gestor-reportes");
-  }
+  
   const param = useParams();
   const { findDroneById, updateDron, loading } = useDrone();
   const [idDron, setIdDron] = useState<number>(0);
@@ -53,6 +51,10 @@ export default function EditarPage() {
       router.push("/dashboard/drone");
     }
   }, [param, loading, reset, router, users]);
+
+  if (user.role !== "admin") {
+    return router.push("/dashboard/gestor-reportes");
+  }
 
   const onSubmit: SubmitHandler<DronForm> = (data) => {
     if (idDron) {

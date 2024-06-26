@@ -57,7 +57,7 @@ const FormSearch = ({
             type="time"
             id="time1"
             className="input"
-            {...register("time1", { required: "La hora es requerida" })}
+            {...register("time1")}
           />
           <label htmlFor="time1" className="block text-sm text-red-500">
             {errors.time1?.message}
@@ -74,9 +74,15 @@ const FormSearch = ({
             id="time2"
             className="input"
             {...register("time2", {
-              required: "La hora es requerida",
-              validate: (value) =>
-                value > watch("time1") ? true : "La hora debe ser mayor",
+              validate: (value) =>{
+                if (!watch("time1")) {
+                  return true;
+                }
+                if (value < watch("time1")) {
+                  return "La hora final debe ser mayor a la hora inicial";
+                }
+                return true;
+              },
             })}
           />
           <label htmlFor="time2" className="block text-sm text-red-500">

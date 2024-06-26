@@ -35,3 +35,13 @@ export interface Pagination {
   next:  number;
   prev:  number;
 }
+
+export interface AveragedReport {
+  hour: string;
+  Cp: number;
+  Vp: number;
+  Cb: number;
+  Vb: number;
+  Cc: number;
+  Vc: number;
+}

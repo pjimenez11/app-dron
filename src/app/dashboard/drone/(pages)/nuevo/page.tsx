@@ -5,14 +5,12 @@ import { DronForm } from "../../interfaces/drones.interface";
 import FormDrones from "../../components/FormDrones";
 import useDrone from "../../hooks/useDrone";
 import { useAuthStore } from "@/app/(auth)/stores/authStore";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function NuevoPage() {
   const { user } = useAuthStore();
   const router = useRouter();
-  if (user.role !== "admin") {
-    return router.push("/dashboard/gestor-reportes");
-  }
+ 
   const { createDron } = useDrone();
   const {
     register,
@@ -23,6 +21,10 @@ export default function NuevoPage() {
   const onSubmit: SubmitHandler<DronForm> = (data) => {
     createDron(data);
   };
+
+  if (user.role !== "admin") {
+    return router.push("/dashboard/gestor-reportes");
+  }
 
   return (
     <div className="h-full flex flex-col items-center justify-center">

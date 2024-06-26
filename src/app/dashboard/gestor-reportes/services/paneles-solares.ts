@@ -15,6 +15,18 @@ export const findReportsDay = async (
   try {
     const { fecha, time1, time2 } = request;
 
+    if (time1.length === 0 || time2.length === 0) {
+      const response = await droneApi.get<FindReportsResponse>(
+        `${BASE_URL}/filter_by_day/${idDrone}?date=${fecha}`
+      );
+      const dataResponse = response.data;
+
+      return dataResponse;
+    }
+
+    console.log("time1", time1);
+    console.log("time2", time2);
+
     const response = await droneApi.get<FindReportsResponse>(
       `${BASE_URL}/filter_by_day/${idDrone}?date=${fecha}&start_time=${time1}&end_time=${time2}&page=${page}`
     );

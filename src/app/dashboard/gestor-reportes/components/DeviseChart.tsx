@@ -64,7 +64,10 @@ const DeviseChart = ({ c, v, title, label1, label2, labelsDevise, height}: Props
       },
     ],
   };
-  return <Line options={options} data={data} height={height} />;
+  return <Line options={options} data={data} height={height}  style={{
+    width: "100%",
+    height: "100%",
+  }} />;
 };
 
 export default DeviseChart;

@@ -11,10 +11,10 @@ interface TableReportsProps {
 
 const TablePanelesSolares = ({ response, onPagination }: TableReportsProps) => {
   const { data: reports, pagination } = response;
-  const [page, setPage] = useState(pagination.page);
+  const [page, setPage] = useState(pagination?.page);
 
   useEffect(() => {
-    onPagination(page);
+    if (page) onPagination(page);
   }, [page]);
 
   return (
@@ -28,7 +28,7 @@ const TablePanelesSolares = ({ response, onPagination }: TableReportsProps) => {
       </div>
 
       <div className="flex flex-col mt-6">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 max-h-96">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden border border-gray-200 md:rounded-lg">
               {reports.length > 0 ? (
@@ -120,7 +120,7 @@ const TablePanelesSolares = ({ response, onPagination }: TableReportsProps) => {
             </div>
           </div>
         </div>
-        {reports.length > 0 && pagination.pages > 1 && (
+        {reports.length > 0 && pagination?.pages > 1 && (
           <div className="flex w-full justify-center mt-4">
             <Pagination
               isCompact

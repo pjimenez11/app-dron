@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  AveragedReport,
   FindReportsRequest,
   FindReportsResponse,
 } from "../../interfaces/findReports/paneles-solares.interface";
@@ -16,6 +17,7 @@ import { toast } from "react-toastify";
 import { FindReportsRequestDays } from "../../interfaces/findReports/paneles-solares.interface";
 import obtenerRangoFecha from "@/shared/utils/RangoFecha";
 import LabelsFecha from "@/shared/utils/LabelsFecha";
+import moment from "moment";
 
 const intialState: FindReportsResponse = {
   data: [],
@@ -136,6 +138,41 @@ const usePanelesSolares = () => {
 
   const rangoFecha = obtenerRangoFecha(reports.data.map((item) => item.fecha_registro));
 
+  const averageReportsByHour = (): AveragedReport[] => {
+    const hourlyData: { [hour: string]: { count: number, Cp: number, Vp: number, Cb: number, Vb: number, Cc: number, Vc: number } } = {};
+  
+    // Acumular valores por hora
+    reports.data.forEach((report) => {
+      const hour = moment.utc(report.fecha_registro).format("HH:00");
+      if (!hourlyData[hour]) {
+        hourlyData[hour] = { count: 0, Cp: 0, Vp: 0, Cb: 0, Vb: 0, Cc: 0, Vc: 0 };
+      }
+      hourlyData[hour].count++;
+      hourlyData[hour].Cp += report.Cp;
+      hourlyData[hour].Vp += report.Vp;
+      hourlyData[hour].Cb += report.Cb;
+      hourlyData[hour].Vb += report.Vb;
+      hourlyData[hour].Cc += report.Cc;
+      hourlyData[hour].Vc += report.Vc;
+    });
+  
+    // Calcular promedios
+    const averagedReports: AveragedReport[] = Object.keys(hourlyData).map((hour) => {
+      const data = hourlyData[hour];
+      return {
+        hour,
+        Cp: data.Cp / data.count,
+        Vp: data.Vp / data.count,
+        Cb: data.Cb / data.count,
+        Vb: data.Vb / data.count,
+        Cc: data.Cc / data.count,
+        Vc: data.Vc / data.count
+      };
+    });
+  
+    return averagedReports;
+  };
+
   return {
     reports,
     loading,
@@ -147,6 +184,7 @@ const usePanelesSolares = () => {
     handlerFindReportsByDays,
     rangoFecha,
     labels,
+    averageReportsByHour
   };
 };
 

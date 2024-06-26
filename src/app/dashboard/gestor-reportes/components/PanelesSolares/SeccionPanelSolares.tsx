@@ -29,7 +29,8 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
     handlerResetReports,
     handlerFindReportsByDays,
     rangoFecha,
-    labels
+    labels: labelsFecha,
+    averageReportsByHour,
   } = usePanelesSolares();
 
   const {
@@ -54,12 +55,18 @@ const SeccionPanelSolares = ({ generatePDF }: SeccionPanelSolaresProps) => {
     }
   }, [filterDate, filterDrone]);
 
-  const Cp = reports.data.map((report) => report.Cp);
-  const Vp = reports.data.map((report) => report.Vp);
-  const Cb = reports.data.map((report) => report.Cb);
-  const Vb = reports.data.map((report) => report.Vb);
-  const Cc = reports.data.map((report) => report.Cc);
-  const Vc = reports.data.map((report) => report.Vc);
+  const reporstByDay = averageReportsByHour();
+
+  const labels = reports.data.length> 10 ? reporstByDay.map((report)=> report.hour) : labelsFecha;
+
+  const Cp = reports.data.length> 10 ? reporstByDay.map((report) => report.Cp) : reports.data.map((report) => report.Cp);
+  const Vp = reports.data.length> 10 ? reporstByDay.map((report) => report.Vp) : reports.data.map((report) => report.Vp);
+  const Cb = reports.data.length> 10 ? reporstByDay.map((report) => report.Cb) : reports.data.map((report) => report.Cb);
+  const Vb = reports.data.length> 10 ? reporstByDay.map((report) => report.Vb) : reports.data.map((report) => report.Vb);
+  const Cc = reports.data.length> 10 ? reporstByDay.map((report) => report.Cc) : reports.data.map((report) => report.Cc);
+  const Vc = reports.data.length> 10 ? reporstByDay.map((report) => report.Vc) : reports.data.map((report) => report.Vc);
+
+
 
 
   const initialForm: FindReportsRequest = {
