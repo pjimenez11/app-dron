@@ -20,7 +20,7 @@ const NavBar = () => {
       <div className="flex flex-col lg:flex-row items-center justify-between container p-4 gap-4">
         <div className="flex items-center">
           <Image src="/images/logo.png" alt="Logo" width={40} height={40} />
-          <h1 className="text-white ml-2 text-xl">Gestor Reportes VAV</h1>
+          <h1 className="text-white ml-2 text-xl">Gestor Reportes UAV</h1>
         </div>
         {user.role === "admin" && (
           <>

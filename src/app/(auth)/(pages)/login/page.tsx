@@ -7,7 +7,7 @@ export default function LoginPage() {
     <div className="w-full max-w-md mx-auto overflow-hidden bg-white rounded-lg shadow-md ">
       <div className="px-10 py-9">
         <h2 className="text-3xl font-bold text-center text-gray-700">
-          Gestión Reportes VAV
+          Gestión Reportes UAV
         </h2>
 
         <div className="flex justify-center mx-auto mt-4">
